@@ -7,20 +7,21 @@ var fs = require("fs");
 
 var spotify = new Spotify(keys.spotify);
 
-var artistNames = function(artists) {
-  return artists.name;
+
+var artistNames = function(artist) {
+  return artist.name;
 };
 
 // Spotify search query 
-var getSong = function(song) {
-  if (song === undefined) {
-    song ="The Sign";
+var getSong = function(songName) {
+  if (songName === undefined) {
+    songName = "The Sign" ;
   }
 
   spotify.search(
     {
       type: "track",
-      query: song,
+      query: songName,
       limit:5
     },
     function(err, data) {
@@ -110,7 +111,7 @@ axios.get(moviequery).then(
       
     }
   );
-}
+};
    
 //movie();
 var runFile = function() {
@@ -148,4 +149,11 @@ var runFile = function() {
 var runThis = function(arg1, arg2) {
   select(arg1, arg2);
 };
-runThis(process.argv[2], process.argv.slice(2).join(" "));
+runThis(process.argv[2], process.argv.slice(3).join(" "));
+
+
+
+
+//getSong("bed of roses");
+//band("back street boys");
+//movie("lion king");
