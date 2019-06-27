@@ -107,7 +107,7 @@ axios.get(moviequery).then(
       console.log("----------------------------");
       console.log("Actors: " + movieData.Actors);
       console.log("----------------------------");
-      console.log("----------------------------");
+      
     }
   );
 }
@@ -118,10 +118,15 @@ var runFile = function() {
     console.log(data);
 
     var dataArray = data.split(",");
-    
-   
+
+    if (dataArray.length === 2) {
+      select(dataArray[0], dataArray[1]);
+    } else if (dataArray.length === 1) {
+      select(dataArray[0]);
+    }
   });
 };
+
  var select = function(caseData, functionData) {
   switch (caseData) {
   case "concert-this":
@@ -143,4 +148,4 @@ var runFile = function() {
 var runThis = function(arg1, arg2) {
   select(arg1, arg2);
 };
-runThis(process.argv[2], process.argv.slice(3).join(" "));
+runThis(process.argv[2], process.argv.slice(2).join(" "));
