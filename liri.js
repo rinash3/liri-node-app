@@ -35,9 +35,13 @@ var getSong = function(song) {
       for (var i = 0; i < songs.length; i++) {
       
         console.log("artist(s): " + songs[i].artists.map(artistNames));
+        console.log("----------------------------");
         console.log("song name: " + songs[i].name);
+        console.log("----------------------------");
         console.log("preview url: " + songs[i].preview_url);
+        console.log("----------------------------");
         console.log("album: " + songs[i].album.name);
+        console.log("----------------------------");
        
       }
     }
@@ -52,6 +56,7 @@ var band = function(artist){
   axios.get(queryURL).then(
     function(response) {
       var data = response.data;
+
 //if returned data is undefind 
       if (!data.length) {
         console.log("No results for:" + artist);
@@ -63,17 +68,79 @@ var band = function(artist){
       for (var i = 0; i < data.length; i++) {
         var concerts = data[i];
 
-        console.log(concerts.venue.city + "," +(concerts.venue.region || concerts.venue.country) + " : " + concerts.venue.name + " " +
-            moment(concerts.datetime).format("MM/DD/YYYY")
-        );
+        console.log("City: " + concerts.venue.city);
+        console.log("Venue Region: " + concerts.venue.region || concerts.venue.country);
+        console.log("Venue Name: " + concerts.venue.name);
+        console.log("Date: " +  moment(concerts.datetime).format("MM/DD/YYYY"));
+        console.log("--------------------------------");
       }
     }
   );
 };
 
+
 var movie = function(movieName) {
   if (movieName === undefined) {
     movieName = "Mr Nobody";
   }
-}
 
+
+
+var moviequery =
+"http://www.omdbapi.com/?t=" + movieName + "&y=&plot=full&tomatoes=true&apikey=2d88790e";
+
+axios.get(moviequery).then(
+  function(response) {
+    var movieData = response.data;
+
+      console.log("Title: " + movieData.Title);
+      console.log("----------------------------");
+      console.log("Year: " + movieData.Year);
+      console.log("----------------------------");
+      console.log("IMDB Rating: " + movieData.imdbRating);
+      console.log("----------------------------");
+      console.log("Country: " + movieData.Country);
+      console.log("----------------------------");
+      console.log("Language: " + movieData.Language);
+      console.log("----------------------------");
+      console.log("Plot: " + movieData.Plot);
+      console.log("----------------------------");
+      console.log("Actors: " + movieData.Actors);
+      console.log("----------------------------");
+      console.log("----------------------------");
+    }
+  );
+}
+   
+//movie();
+var runFile = function() {
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    console.log(data);
+
+    var dataArray = data.split(",");
+    
+   
+  });
+};
+ var select = function(caseData, functionData) {
+  switch (caseData) {
+  case "concert-this":
+    band(functionData);
+    break;
+  case "spotify-this-song":
+    getSong(functionData);
+    break;
+  case "movie-this":
+    movie(functionData);
+    break;
+  case "do-what-it-says":
+    runFile();
+    break;
+  default:
+    console.log("I do not know that");
+  }
+};
+var runThis = function(arg1, arg2) {
+  select(arg1, arg2);
+};
+runThis(process.argv[2], process.argv.slice(3).join(" "));
